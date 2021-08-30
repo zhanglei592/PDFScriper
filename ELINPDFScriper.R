@@ -27,10 +27,10 @@ for(doc in docs){
   
   
     ##the first page
-    invoice_month <- cost_doc[[1]][14] %>%
+    dataset_month <- cost_doc[[1]][14] %>%
       str_split(" {2,}", ,simplify = TRUE)
     
-    dataset_month <- cost_doc[[1]][17] %>%
+     invoice_month<- cost_doc[[1]][17] %>%
       str_split(" {2,}", ,simplify = TRUE)
     
     cost_tbl <- cost_doc[[1]][c(33,34)] %>%
@@ -40,14 +40,14 @@ for(doc in docs){
     cost_tbl <- data.frame(cost_tbl, stringsAsFactors = FALSE) 
     
     names(cost_tbl) <- c("a","ChargeType", "TotalAmount")  
-    cost_tbl$DatasetMonth <- dataset_month[3]    
+    cost_tbl$InvoiceMonth<- invoice_month[3]    
     cost_tbl$UserType <- c("General User", "Low User" )
     cost_tbl$UnitPrice <- c("", "" )
-    cost_tbl$Quantity <- c("1", "1" )
+    cost_tbl$Quantity <- c("", "" )
     
      
     cost_tbl$DocName <- doc
-    cost_tbl$InvoiceMonth <- invoice_month[3]
+    cost_tbl$DatasetMonth  <- dataset_month[3]
     
     cost_tbl <- cost_tbl[, column_order]
     
