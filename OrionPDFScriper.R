@@ -8,10 +8,11 @@ rm(list = ls())
 #pdf_location 
 docs <- list.files("OrionInput") 
 
-column_order <- c("ScrapedDate",
+column_order <- c("InvoiceMonth",
                   "DatasetMonth",
                   "ChargeCategory",
                   "ChargeType",
+                  "Zone",
                   "ChargeDescription",
                   "Quantity",
                   "QuantityDescription",
@@ -31,6 +32,10 @@ for(doc in docs){
   #scrape from PDF
   for (i in 1:length(cost_doc)) {
     ##the first page
+    invoice_month <- cost_doc[[i]][4] %>%
+      str_split_fixed(" {2,}", 2) %>%
+      str_replace(", ", " ")
+    
     dataset_month <- cost_doc[[i]][3] %>%
       str_split_fixed(" {2,}", 2) %>%
       str_replace(", ", " ")
@@ -58,8 +63,15 @@ for(doc in docs){
                               "VOLUME (GENERAL / IRRIGATION / STREETLIGHTING)",
                               "PEAK (GENERAL / STREETLIGHTING)")
     
+    cost_tbl$Zone <- c("","","ORION NETWORK","ORION NETWORK","ORION NETWORK")
+    
+    cost_tbl$ChargeDescription <- c("GENERAL CONNECTION FIXED DAILY CHARGE",
+                                    "FIXED STREETLIGHTING",
+                                    "WEEKDAYS 7AM - 9PM",
+                                    "NIGHTS, WEEKENDS, AND HOLIDAYS",
+                                    "PEAK PERIOD DEMAND")
     cost_tbl$DocName <- doc
-    cost_tbl$ScrapedDate <- Sys.Date()
+    cost_tbl$InvoiceMonth <- invoice_month[2]
     
     cost_tbl <- cost_tbl[, column_order]
     
