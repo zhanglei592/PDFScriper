@@ -9,17 +9,15 @@ rm(list = ls())
 docs <- list.files("OrionInput") 
 
 column_order <- c("InvoiceMonth",
-                  "DatasetMonth",
-                  "ChargeCategory",
-                  "ChargeType",
-                  "Zone",
+                  "DatasetMonth", 
+                  "ChargeType", 
                   "ChargeDescription",
-                  "Quantity",
-                  "QuantityDescription",
-                  "TotalUnitcost",
-                  "costDescription",
+                  "Quantity", 
+                  "TotalUnitcost", 
                   "TotalAmount",
-                  "DocName"
+                  "a",
+                  "b" ,
+                  "TotalAmount"
                   ) 
 
 cost_list <- data.frame()
@@ -53,24 +51,22 @@ for(doc in docs){
                           "costDescription",
                           "TotalAmount") 
     
-    cost_tbl$DatasetMonth <- dataset_month[2]  
-    
-    cost_tbl$ChargeCategory <- "GENERAL / IRRIGATION / STREETLIGHTING CONNECTIONS"
+    cost_tbl$DatasetMonth <- dataset_month[2]   
     
     cost_tbl$ChargeType <- c("FIXED",
                               "FIXED",
                               "VOLUME (GENERAL / IRRIGATION / STREETLIGHTING)",
                               "VOLUME (GENERAL / IRRIGATION / STREETLIGHTING)",
-                              "PEAK (GENERAL / STREETLIGHTING)")
-    
-    cost_tbl$Zone <- c("","","ORION NETWORK","ORION NETWORK","ORION NETWORK")
+                              "PEAK (GENERAL / STREETLIGHTING)") 
     
     cost_tbl$ChargeDescription <- c("GENERAL CONNECTION FIXED DAILY CHARGE",
                                     "FIXED STREETLIGHTING",
                                     "WEEKDAYS 7AM - 9PM",
                                     "NIGHTS, WEEKENDS, AND HOLIDAYS",
                                     "PEAK PERIOD DEMAND")
-    cost_tbl$DocName <- doc
+    
+    cost_tbl$a <- c("")
+    cost_tbl$b <- c("")
     cost_tbl$InvoiceMonth <- invoice_month[2]
     
     cost_tbl <- cost_tbl[, column_order]
@@ -81,5 +77,7 @@ for(doc in docs){
   
 
 }
-write_csv(cost_list, "./output/Orion_cost_list.csv", col_names = TRUE)
+ 
+
+  write_csv(cost_list, "./output/Orion_cost_list.csv", col_names = TRUE)
 

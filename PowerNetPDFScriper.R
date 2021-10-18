@@ -6,7 +6,7 @@ library(readr)
 
 rm(list = ls())
 #pdf_location 
-docs <- list.files("ELINInput") 
+docs <- list.files("PowerNetInput") 
 
 column_order <- c("InvoiceMonth",
                   "DatasetMonth",
@@ -15,14 +15,14 @@ column_order <- c("InvoiceMonth",
                   "UnitPrice",
                   "Quantity", 
                   "TotalAmount",
-                  "DocName"
+                  "Company"
                   ) 
 
 cost_list <- data.frame()
 
 #scrape from each document
 for(doc in docs){
-  cost_doc <- pdf_text(pdf = paste("./ELINInput/", doc, sep = ""))  %>%
+  cost_doc <- pdf_text(pdf = paste("./PowerNetInput/", doc, sep = ""))  %>%
     strsplit(split = "\n") 
   
   
@@ -45,9 +45,12 @@ for(doc in docs){
     cost_tbl$UnitPrice <- c("", "" )
     cost_tbl$Quantity <- c("", "" )
     
-     
-    cost_tbl$DocName <- doc
+      
     cost_tbl$DatasetMonth  <- dataset_month[3]
+    comp <- cost_doc[[2]][6] %>%
+      str_split(" {2,}", ,simplify = TRUE)
+    
+    cost_tbl$Company <- comp[1]
     
     cost_tbl <- cost_tbl[, column_order]
     
@@ -57,5 +60,5 @@ for(doc in docs){
   
 
 }
-write_csv(cost_list, "./output/ELIN_cost_list.csv", col_names = TRUE)
+write_csv(cost_list, "./output/PowerNet_cost_list.csv", col_names = TRUE)
 
